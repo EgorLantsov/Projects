@@ -22,7 +22,7 @@ public class CamServer implements Runnable{ // сервер будет как п
         try {
 //            synchronized (CamServer.this){ // синхронизируемся на объекте сервера
 //                try {
-//                    CamServer.this.wait(); // и ждем пока его не разбудят из вне
+//                    CamServer.this.wait(); // и ждем пока его не разбудят из вне, выберут его из мапы по его айпи
 //                } catch (InterruptedException e) {
 //                    e.printStackTrace();
 //                }

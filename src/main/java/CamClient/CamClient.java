@@ -20,12 +20,12 @@ public class CamClient {
             String command = null; // команда для начала трансляции с камеры (получаем с сервера)
 
             // отправляем айпи адресс клиента на сервер:
-            URL whatismyip = new URL("http://checkip.amazonaws.com");
-            BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-            String ip = in.readLine();
-            OutputStream outIp = socket.getOutputStream();
-            DataOutputStream doutIp = new DataOutputStream(outIp);
-            doutIp.writeUTF(ip); // пишем в поток айпи клиента
+//            URL whatismyip = new URL("http://myip.ru/");
+//            BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
+//            String ip = in.readLine();
+//            OutputStream outIp = socket.getOutputStream();
+//            DataOutputStream doutIp = new DataOutputStream(outIp);
+//            doutIp.writeUTF(ip); // пишем в поток айпи клиента
 
             // отправляем на сервер изображения и принимаем команду записи:
             OutputStream out = socket.getOutputStream(); // для отправки изображений на сервер
@@ -38,7 +38,6 @@ public class CamClient {
                 FrameCapture frameCapture = new FrameCapture(); // объект для настройки изображения и открытия камеры
 
                 while (frameCapture.webcam.isOpen()) {
-                    // почему цикл идет медленно?
                     ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
                     ImageIO.write(frameCapture.webcam.getImage(), "JPEG", byteOut);
 
@@ -47,10 +46,6 @@ public class CamClient {
                     dout.flush();
 
                     bout.write(byteOut.toByteArray());
-
-
-//                    ImageIO.write(frameCapture.webcam.getImage(), "JPEG", bout); // посылаем кадры на сервер
-//                    System.out.println("Image send");
 
                 }
             }
