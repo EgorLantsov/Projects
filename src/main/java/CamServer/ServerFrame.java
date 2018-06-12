@@ -33,6 +33,10 @@ public class ServerFrame extends JFrame {
                 // todo
                 try {
                     MultiThreadServer.startTranslation(comboBox.getSelectedItem().toString());
+                    // нажатие кнопки вызывает метод startTranslation при выбранном айпи в comboBox и переданном
+                    // в качестве параметра в этот метод
+                    removeIp(comboBox.getSelectedItem().toString()); // сразу как открыли трансляциюю с клиента,
+                    // удаляем его сокет из comboBox
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
@@ -50,9 +54,11 @@ public class ServerFrame extends JFrame {
 
     public void addIp(String ip) {
         invokeLater(() -> comboBox.addItem(ip));
+        // добавляем элемент айпи из MultiThreadServer в конце очереди выполнения основного кода
     }
 
     public void removeIp(String ip) {
         invokeLater(() -> comboBox.removeItem(ip));
+        // удаляем элемент айпи
     }
 }

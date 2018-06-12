@@ -18,10 +18,9 @@ import static javax.swing.SwingUtilities.invokeLater;
 public class MultiThreadServer {
 
     static ExecutorService service = Executors.newFixedThreadPool(2); // пул потоков для подключения нескольких
-//    private static Map<String, Socket> socketMap;
-//    private static Map<String, CamServer> camServerMap;
-    private static Map<String, Connection> connections = new HashMap<>();
-    // клиентов
+
+    private static Map<String, Connection> connections = new HashMap<>(); // для хранения подключенных клиентов
+    // и поток-серверов под этих клиентов
 
     private static class Connection {
         Socket sock;
@@ -63,23 +62,21 @@ public class MultiThreadServer {
 
                 Socket socketClient = ss.accept(); // ждем подключений клиентов
                 System.out.println("Got a client");
-                OutputStream out = socketClient.getOutputStream();
-                DataOutputStream dout = new DataOutputStream(out);
-                String command = null;
-                BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+                OutputStream out = socketClient.getOutputStream(); // исходящий поток для отправки комманды
+                DataOutputStream dout = new DataOutputStream(out); // добавляем действий, оборачивая в Дату
+
                 // получаем ip клиента
                 InputStream inputIp = socketClient.getInputStream(); // чтение из клиента его айпи
                 DataInputStream dataInIp = new DataInputStream(inputIp); // переводим чтение в дату
-//                ipClient = dataInIp.readUTF();
 
                 ipClient = socketClient.getInetAddress().getHostAddress() + ":" + socketClient.getPort();
 
                 // добавили в мапу сокет аксепт в мапу, с ключем по айпи
                 // далее через графическое окно вызываем из мапы нужный сокет
-//                socketMap.put(ipClient, socketClient);
                 connections.put(ipClient, new Connection(socketClient, new CamServer(socketClient), dout, dataInIp));
 
-                frame.addIp(ipClient);
+                frame.addIp(ipClient); // добавляем сокет в меню отложенным методом, после формирования окна меню
+
 //                for (Map.Entry<String, Socket> entry : socketMap.entrySet()) {
 //                    ipList.add(entry.getKey()); // перекидываем апишники из мапы в список для передачи во ServerMenu
 //                }
@@ -114,11 +111,11 @@ public class MultiThreadServer {
     }
 
     static void startTranslation(String ipClient) throws IOException {
-        Connection con = connections.get(ipClient);
+        Connection con = connections.get(ipClient); // берем соединение по айпи из мапы connections
 
-        assert con != null;
+        assert con != null; // проверка истинности выражения
 
-        service.execute(con.srv); // и в пуле запускаем вытаскивая из мапы по айпи
+        service.execute(con.srv); //  в пуле запускаем конкретный сервер из класса соединений
         con.out.writeUTF("start"); // отправляем команду для начала трансляции
 
     }

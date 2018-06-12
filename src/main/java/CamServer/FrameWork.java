@@ -7,21 +7,20 @@ import java.awt.*;
 public class FrameWork {
     volatile Image image = null;
     JFrame jFrame = null;
+
     //реализуем конструктор
     public FrameWork(){
-//        this.image = image;
         this.jFrame = getFrame(); // создаем диалоговое окно
-        jFrame.add(new MyComponent());
+        jFrame.add(new MyComponent()); // добавляем изображение в диалоговое окно
     }
     public void getImage(Image image){
-//        jFrame.add(new MyComponent(image)); // выводим картинку в окне
         this.image = image;
-        SwingUtilities.invokeLater(() -> jFrame.repaint());
+        SwingUtilities.invokeLater(() -> jFrame.repaint()); // перерисовываем картинку
     }
      JFrame getFrame(){
         JFrame jFrame = new JFrame();
         jFrame.setVisible(true);
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         jFrame.setBounds(dimension.width/2 - 300, dimension.height/2 - 240, 600, 480);

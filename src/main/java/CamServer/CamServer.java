@@ -1,11 +1,9 @@
 package CamServer;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class CamServer implements Runnable{ // сервер будет как поток
@@ -29,6 +27,7 @@ public class CamServer implements Runnable{ // сервер будет как п
                 FrameWork frameWork = new FrameWork();
             InputStream in = socketClient.getInputStream();
             while (!socketClient.isClosed()) { // в цикле получаем изображения для смены картинки
+
                 DataInputStream din = new DataInputStream(in);
 
                 int len = din.readInt(); // получаем размер картинки (например 14 байт)
@@ -53,9 +52,14 @@ public class CamServer implements Runnable{ // сервер будет как п
                 BufferedImage image = ImageIO.read(new ByteArrayInputStream(data));
                 frameWork.getImage(image);
 
+                // событие при закрытии окна трансляции с клиента
+                if (!frameWork.jFrame.isActive()){ // если окно закрыто то отсылаем команду клиенту
+                   socketClient.close();
+                    break; // выходим из цикла
+                }
+
 //                BufferedImage image = ImageIO.read(in); // читаем полученное изображение
 //                frameWork.getImage(image); // передаем изображение в диалоговое окно
-
             }
 //            }
         } catch (IOException e) {
