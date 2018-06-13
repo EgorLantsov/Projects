@@ -49,7 +49,7 @@ public class CamClient {
                         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
                         ImageIO.write(frameCapture.webcam.getImage(), "JPEG", byteOut);
                         try { // отлавливаем исключение
-
+                            // исключение образуется если сервер закрывает сокет (из-за закрытия окна транслияцци)
                         DataOutputStream dout = new DataOutputStream(bout);
                         dout.writeInt(byteOut.size());
                         dout.flush();

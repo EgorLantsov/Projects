@@ -53,7 +53,7 @@ public class CamServer implements Runnable{ // сервер будет как п
                 frameWork.getImage(image);
 
                 // событие при закрытии окна трансляции с клиента
-                if (!frameWork.jFrame.isActive()){ // если окно закрыто то отсылаем команду клиенту
+                if (!frameWork.jFrame.isActive()){ // если окно закрыто то закрываем сокет, у клиента вызывается исключение
                    socketClient.close();
                     break; // выходим из цикла
                 }
