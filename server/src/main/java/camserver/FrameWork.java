@@ -1,6 +1,5 @@
-package CamServer;
+package camserver;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 

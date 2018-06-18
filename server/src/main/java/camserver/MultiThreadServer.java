@@ -1,19 +1,12 @@
-package CamServer;
+package camserver;
 
-import javax.swing.*;
 import java.io.*;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static javax.swing.SwingUtilities.invokeLater;
 
 public class MultiThreadServer {
 
@@ -42,13 +35,10 @@ public class MultiThreadServer {
         frame.validate();
         frame.setVisible(true);
 
-//        socketMap = new HashMap<>();
-//        ArrayList<String> ipList = new ArrayList<>();
+
         int port = 4444;
         String ipClient = null;
-//        ServerMenu serverMenu = new ServerMenu();
-        // в мапу будем добавлять сервера
-//        camServerMap = new HashMap<>();
+
         try (ServerSocket ss = new ServerSocket(port)){ // создали сокет сервера и указали порт
             while (!ss.isClosed()) { // сервер работает в цикле если он не закрыт (можно ли обойтись без цикла?)
                 System.out.println("Server is waiting for client...");
@@ -76,33 +66,6 @@ public class MultiThreadServer {
                 connections.put(ipClient, new Connection(socketClient, new CamServer(socketClient), dout, dataInIp));
 
                 frame.addIp(ipClient); // добавляем сокет в меню отложенным методом, после формирования окна меню
-
-//                for (Map.Entry<String, Socket> entry : socketMap.entrySet()) {
-//                    ipList.add(entry.getKey()); // перекидываем апишники из мапы в список для передачи во ServerMenu
-//                }
-                //
-//                serverMenu.frameFactory(ipList); // вызываем создание меню
-//                command = serverMenu.cmdStart(); // команда в которй при нажатии кнопки присваивается "start"
-                //
-//                command = "start";
-
-//                if (command.equals("start")) { // если нажали на кнопку то запускаем код ниже
-//                    CamServer srv = new CamServer(socketMap.get(ipClient)); // создаем объект сервера под входящий клиент
-//
-//                    camServerMap.put(ipClient, srv); // храним его в мапе потоков, по айпи
-//
-//                    service.execute(camServerMap.get(ipClient)); // и в пуле запускаем вытаскивая из мапы по айпи
-////                    while (!"start".equals(command)) { // вводим команду для трансляции
-////                        System.out.println("waiting fo command...");
-////                        command = keyboard.readLine();
-////                        synchronized (camServerMap.get(ipClient)) { // синхронизируемся на нужном нам объекте-сервере по айпи
-//////                        camServerMap.get(ipClient).notify();// будим объект - поток сервер
-////                        }
-////                    }
-//                    dout.writeUTF(command); // отправляем команду для начала трансляции
-//
-//                    command = null;
-//                }
             }
             service.shutdown(); // останавливаем работу
         } catch (IOException e) {

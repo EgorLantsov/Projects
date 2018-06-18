@@ -1,10 +1,16 @@
-package CamServer;
+package camserver;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URL;
 
 import static javax.swing.SwingUtilities.invokeLater;
 
@@ -23,7 +29,10 @@ public class ServerFrame extends JFrame {
         JPanel panel = new JPanel();
         panel.setBackground(Color.GRAY);
         panel.setLayout(new FlowLayout());
-        ImageIcon icon = new ImageIcon("src/main/resources/photo.png");
+        // подгрузка картинки
+        URL iconURL = getClass().getClassLoader().getResource("photo.png");
+        ImageIcon icon = new ImageIcon(iconURL);
+        // картинка на кнопку
         JButton button = new JButton(icon);
         button.setPreferredSize(new Dimension(120,90)); // устанавливаем размеры кнопки
         // определяем действия кнопки:

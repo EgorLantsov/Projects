@@ -1,11 +1,24 @@
-package CamClient;
+package camclient;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
 import java.io.*;
 import java.net.*;
 
 public class CamClient {
+
+    private static String ipReader(){
+        try {
+            FileInputStream fstream = new FileInputStream("C:/Users/Manager/Desktop/IP.txt");
+            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+            String ip = br.readLine();
+            return ip;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
 
@@ -16,10 +29,11 @@ public class CamClient {
                 e.printStackTrace();
             }
             int serverPort = 4444; // порт сервера
-            String address = "111.1.1.1";  // IP компьютера на котором установлен сервер (для клиента на другом компе)
+//            String address = "93.100.73.109";  // IP компьютера на котором установлен сервер (для клиента на другом компе)
+            String address = ipReader(); // читаем айпи из текстового файла
             try {
-//            InetAddress ipAddress = InetAddress.getByName(address); // создаем объект с указанным IP сервера
-                Socket socket = new Socket("localhost", serverPort);
+            InetAddress ipAddress = InetAddress.getByName(address); // создаем объект с указанным IP сервера
+                Socket socket = new Socket(address, serverPort);
                 String command = null; // команда для начала трансляции с камеры (получаем с сервера)
 
                 // отправляем айпи адресс клиента на сервер:
@@ -60,7 +74,7 @@ public class CamClient {
                         }
 
 
-                        System.out.println("write image");
+//                        System.out.println("write image");
                     }
 
                 }

@@ -1,7 +1,6 @@
-package CamServer;
+package camserver;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
@@ -68,3 +67,6 @@ public class CamServer implements Runnable{ // сервер будет как п
     }
 
 }
+
+// java -jar webcam.jar
+// java -cp webcam.jar camclient.CamClient

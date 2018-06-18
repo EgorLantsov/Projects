@@ -1,9 +1,8 @@
-package CamClient;
+package camclient;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 
 public class FrameCapture {
