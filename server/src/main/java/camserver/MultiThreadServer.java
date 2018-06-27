@@ -21,34 +21,24 @@ public class MultiThreadServer {
         DataOutputStream out;
         DataInputStream in;
 
-        public Connection(Socket sock, CamServer srv, DataOutputStream out, DataInputStream in) {
+        public Connection(Socket sock, CamServer srv, DataOutputStream out) {
             this.sock = sock;
             this.srv = srv;
             this.out = out;
-            this.in = in;
         }
     }
-
-
+    
     public static void main(String[] args) {
         ServerFrame frame = new ServerFrame();
         frame.validate();
         frame.setVisible(true);
 
-
         int port = 4444;
         String ipClient = null;
 
         try (ServerSocket ss = new ServerSocket(port)){ // создали сокет сервера и указали порт
-            while (!ss.isClosed()) { // сервер работает в цикле если он не закрыт (можно ли обойтись без цикла?)
+            while (!ss.isClosed()) { // сервер работает в цикле если он не закрыт
                 System.out.println("Server is waiting for client...");
-                // тут код - запуск диалогового окна с полем ввода адреса клиента, и кнопки подключения к клиенту
-
-                // нужна команда для того чтобы можно было вести трансляцию с конкретного компьютера
-                // а не со всех сразу подключенных клиентов
-                // нужен поток записи DataOutputStream (строки) для отправки команды по адресу компьютера клиента
-                // запущенный ранее клиент получает компанду и начинает передавать картинку с камеры
-
 
                 Socket socketClient = ss.accept(); // ждем подключений клиентов
                 System.out.println("Got a client");
@@ -56,14 +46,14 @@ public class MultiThreadServer {
                 DataOutputStream dout = new DataOutputStream(out); // добавляем действий, оборачивая в Дату
 
                 // получаем ip клиента
-                InputStream inputIp = socketClient.getInputStream(); // чтение из клиента его айпи
-                DataInputStream dataInIp = new DataInputStream(inputIp); // переводим чтение в дату
+//                InputStream inputIp = socketClient.getInputStream(); // чтение из клиента его айпи
+//                DataInputStream dataInIp = new DataInputStream(inputIp); // переводим чтение в дату
 
                 ipClient = socketClient.getInetAddress().getHostAddress() + ":" + socketClient.getPort();
 
                 // добавили в мапу сокет аксепт в мапу, с ключем по айпи
                 // далее через графическое окно вызываем из мапы нужный сокет
-                connections.put(ipClient, new Connection(socketClient, new CamServer(socketClient), dout, dataInIp));
+                connections.put(ipClient, new Connection(socketClient, new CamServer(socketClient), dout));
 
                 frame.addIp(ipClient); // добавляем сокет в меню отложенным методом, после формирования окна меню
             }
